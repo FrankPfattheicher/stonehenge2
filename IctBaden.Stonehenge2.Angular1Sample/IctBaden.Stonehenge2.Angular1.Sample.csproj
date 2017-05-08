@@ -102,7 +102,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IctBaden.Stonehenge2.Angular\IctBaden.Stonehenge2.Angular1.csproj">
+    <ProjectReference Include="..\IctBaden.Stonehenge2.Angular1\IctBaden.Stonehenge2.Angular1.csproj">
       <Project>{5bc7786a-0d85-4493-8d06-4dcb9d2f8f68}</Project>
       <Name>IctBaden.Stonehenge2.Angular1</Name>
     </ProjectReference>
