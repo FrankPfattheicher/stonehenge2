@@ -13,6 +13,7 @@ nuget
 *.sln.docstates
 .idea
 .iml
+.vs
 
 [Dd]ebug/
 [Rr]elease/
