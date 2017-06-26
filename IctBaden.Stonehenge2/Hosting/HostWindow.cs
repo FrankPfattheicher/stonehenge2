@@ -53,6 +53,7 @@ namespace IctBaden.Stonehenge2.Hosting
             var dir = Directory.CreateDirectory(path);
 
             var opened = ShowWindowMidori(path) ||
+                         ShowWindowEpiphany() ||
                          ShowWindowChrome(path) ||
                          ShowWindowInternetExplorer() ||
                          ShowWindowFirefox() ||
@@ -78,6 +79,23 @@ namespace IctBaden.Stonehenge2.Hosting
             var cmd = Environment.OSVersion.Platform == PlatformID.Unix ? "chromium-browser" : "chrome.exe";
             var parameter = $"--app={HostUrl}/?title={HttpUtility.UrlEncode(Title)} --window-size={WindowSize.X},{WindowSize.Y} --disable-translate --user-data-dir=\"{path}\"";
             var ui = Process.Start(cmd, parameter);
+            if (ui == null)
+            {
+                return false;
+            }
+            Console.WriteLine("AppHost Created at {0}, listening on {1}", DateTime.Now, HostUrl);
+            ui.WaitForExit();
+            return true;
+        }
+
+        
+        private bool ShowWindowEpiphany()
+        {
+            if (Environment.OSVersion.Platform != PlatformID.Unix)
+                return false;
+
+            var parameter = $"{HostUrl}/?title={HttpUtility.UrlEncode(Title)}";
+            var ui = Process.Start("epiphany", parameter);
             if (ui == null)
             {
                 return false;
