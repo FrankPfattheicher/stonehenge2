@@ -149,6 +149,8 @@
         {
             if (propType == typeof(string))
                 return propValue;
+            if (propType == typeof(bool))
+                return bool.Parse(propValue);
 
             try
             {
