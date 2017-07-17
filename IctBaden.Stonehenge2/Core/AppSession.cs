@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.IO;
+
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
 
 namespace IctBaden.Stonehenge2.Core
@@ -42,6 +43,9 @@ namespace IctBaden.Stonehenge2.Core
         private readonly AutoResetEvent _eventRelease = new AutoResetEvent(false);
 
         public bool IsWaitingForEvents { get; private set; }
+
+        public bool SecureCookies { get; private set; }
+
         public List<string> CollectEvents()
         {
             IsWaitingForEvents = true;
@@ -59,7 +63,7 @@ namespace IctBaden.Stonehenge2.Core
         private object _viewModel;
         public object ViewModel
         {
-            get { return _viewModel; }
+            get => _viewModel;
             set
             {
                 (_viewModel as IDisposable)?.Dispose();
@@ -149,10 +153,7 @@ namespace IctBaden.Stonehenge2.Core
         private readonly Dictionary<string, object> _userData;
         public object this[string key]
         {
-            get
-            {
-                return _userData.ContainsKey(key) ? _userData[key] : null;
-            }
+            get => _userData.ContainsKey(key) ? _userData[key] : null;
             set
             {
                 if (this[key] == value)
@@ -227,6 +228,26 @@ namespace IctBaden.Stonehenge2.Core
             SessionTimeout = TimeSpan.FromMinutes(15);
             Cookies = new Dictionary<string, string>();
             LastAccess = DateTime.Now;
+
+            try
+            {
+                if (Assembly.GetEntryAssembly() == null) return;
+                var path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
+                var cfg = Path.Combine(path, "stonehenge2.cfg");
+                if (!File.Exists(cfg)) return;
+
+                var settings = File.ReadAllLines(cfg);
+                var secureCookies = settings.FirstOrDefault(s => s.Contains("SecureCookies"));
+                if (secureCookies != null)
+                {
+                    var set = secureCookies.Split('=');
+                    SecureCookies = (set.Length > 1) && (set[1].Trim() == "1");
+                }
+            }
+            catch
+            {
+                // ignore
+            }
         }
 
         public bool IsInitialized => UserAgent != null;
@@ -244,10 +265,10 @@ namespace IctBaden.Stonehenge2.Core
             }
         }
 
+        // ReSharper disable once UnusedParameter.Local
         private void DetectBrowser(string userAgent)
         {
             // Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36
-            var decoder = new Regex(@"\w+/[\d.]+ \(");
             //TODO: Decocder
             Browser = "";
             CookiesSupported = true;

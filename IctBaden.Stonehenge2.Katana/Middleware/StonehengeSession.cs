@@ -52,7 +52,12 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
             {
                 // session not found - redirect to new session
                 session = NewSession(appSessions, context.Request);
-                context.Response.Headers.Add("Set-Cookie", new[] { "stonehenge-id=" + session.Id });
+
+                context.Response.Headers.Add("Set-Cookie",
+                    session.SecureCookies
+                        ? new[] { "stonehenge-id=" + session.Id, "Secure" }
+                        : new[] { "stonehenge-id=" + session.Id });
+
                 context.Response.Redirect("/Index.html?stonehenge-id=" + session.Id);
                 Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] From IP {context.Request.RemoteIpAddress}:{context.Request.RemotePort} - redirect to {session.Id}");
                 return;

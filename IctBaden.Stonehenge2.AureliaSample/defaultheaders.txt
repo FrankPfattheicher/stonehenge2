@@ -1,0 +1,18 @@
+﻿# Sample defaultheaders.txt
+# uncomment lines to use
+
+# Only connect to this site via HTTPS for the two years (recommended)
+#Strict-Transport-Security: max-age=63072000
+
+# Disable unsafe inline/eval and plugins, only load scripts and stylesheets from same origin, fonts from google,
+# and images from same origin. Sites should aim for policies like this.
+#Content-Security-Policy: default-src https: ; font-src 'self'; img-src 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'
+
+# Prevent browsers from incorrectly detecting non-scripts as scripts
+#X-Content-Type-Options: nosniff
+
+# Block site from being framed with X-Frame-Options and CSP
+#X-Frame-Options: DENY
+
+# Block pages from loading when they detect reflected XSS attacks
+#X-XSS-Protection: 1; mode=block

@@ -47,7 +47,7 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 {
                     foreach (var cookie in requestCookies)
                     {
-                        if (!cookies.ContainsKey(cookie[0]))
+                        if (!cookies.ContainsKey(cookie[0]) && (cookie.Length > 1))
                         {
                             cookies.Add(cookie[0], cookie[1]);
                         }
@@ -115,7 +115,10 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                 }
                 if (!appSession.StonehengeCookieSet)
                 {
-                    context.Response.Headers.Add("Set-Cookie", new[] { "stonehenge-id=" + appSession.Id });
+                    context.Response.Headers.Add("Set-Cookie",
+                        appSession.SecureCookies
+                            ? new[] {"stonehenge-id=" + appSession.Id, "Secure"}
+                            : new[] {"stonehenge-id=" + appSession.Id});
                 }
 
                 if (content.IsBinary)

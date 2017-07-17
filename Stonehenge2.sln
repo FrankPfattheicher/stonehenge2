@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.15
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65F46581-B6AB-4878-8174-BA207D491B06}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		icon64.png = icon64.png
 		README.md = README.md
 		ReleaseNotes2.md = ReleaseNotes2.md
+		Stonehenge2-AssemblyInfo.cs = Stonehenge2-AssemblyInfo.cs
 		stonehenge2.nuspec = stonehenge2.nuspec
 	EndProjectSection
 EndProject

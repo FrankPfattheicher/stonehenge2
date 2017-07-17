@@ -77,7 +77,7 @@ Target "CreatePackage" (fun _ ->
                                                                                         "Owin", "1.0";
                                                                                         "SqueezeMe", "1.3.33";
                                                                                         "Newtonsoft.Json", "10.0.2" ] } ]
-            Publish = false }) 
+            Publish = false }) // using website for upload
             @"stonehenge2.nuspec"
     else
         printfn "*****************************************************" 
