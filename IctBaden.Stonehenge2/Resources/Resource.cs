@@ -1,4 +1,5 @@
-﻿namespace IctBaden.Stonehenge2.Resources
+﻿// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+namespace IctBaden.Stonehenge2.Resources
 {
     using System;
 
