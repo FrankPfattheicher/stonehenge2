@@ -19,6 +19,7 @@ namespace IctBaden.Stonehenge2.Core
         public string AppInstanceId { get; private set; }
 
         public string HostDomain { get; private set; }
+        public bool IsLocal { get; private set; }
         public string ClientAddress { get; private set; }
         public string UserAgent { get; private set; }
         public string Platform { get; private set; }
@@ -254,9 +255,10 @@ namespace IctBaden.Stonehenge2.Core
 
         public bool IsInitialized => UserAgent != null;
 
-        public void Initialize(string hostDomain, string clientAddress, string userAgent)
+        public void Initialize(string hostDomain, bool isLocal, string clientAddress, string userAgent)
         {
             HostDomain = hostDomain;
+            IsLocal = isLocal;
             ClientAddress = clientAddress;
             UserAgent = userAgent;
             ConnectedSince = DateTime.Now;

@@ -106,7 +106,8 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
         {
             var userAgent = request.Headers["User-Agent"];
             var session = new AppSession();
-            session.Initialize(request.Host.Value, request.RemoteIpAddress, userAgent);
+            var isLocal = request.Environment.ContainsKey("server.IsLocal") && (bool)request.Environment["server.IsLocal"];
+            session.Initialize(request.Host.Value, isLocal, request.RemoteIpAddress, userAgent);
             appSessions.Add(session);
             Trace.TraceInformation($"Stonehenge2.Katana New session {session.Id}. {appSessions.Count} sessions.");
             return session;
