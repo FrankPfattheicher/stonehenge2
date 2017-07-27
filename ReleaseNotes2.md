@@ -1,4 +1,5 @@
 
+* 2.2.0 - Server side MessageBox and Navigation requests added.
 * 2.1.3 - Cookie retrieve bug fixed. Sample defaultheaders.txt
 * 2.1.2 - Supporting stonehenge2.cfg with setting SecureCookies
 * 2.1.1 - Supporting comments in defaultheaders.txt

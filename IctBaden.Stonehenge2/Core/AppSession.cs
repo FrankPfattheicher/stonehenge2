@@ -92,7 +92,7 @@ namespace IctBaden.Stonehenge2.Core
         public void ClientAddressChanged(string address)
         {
             ClientAddress = address;
-            NotifyPropertyChanged("ClientAddress");
+            NotifyPropertyChanged(nameof(ClientAddress));
         }
 
         public object SetViewModelType(string typeName)
@@ -211,8 +211,8 @@ namespace IctBaden.Stonehenge2.Core
                 _terminator.Dispose();
                 TimedOut?.Invoke();
             }
-            NotifyPropertyChanged("ConnectedDuration");
-            NotifyPropertyChanged("LastAccessDuration");
+            NotifyPropertyChanged(nameof(ConnectedDuration));
+            NotifyPropertyChanged(nameof(LastAccessDuration));
         }
 
         private IDisposable _terminator;
@@ -299,14 +299,14 @@ namespace IctBaden.Stonehenge2.Core
                 PermanentSessionId = cookies["ss-pid"];
             }
             LastAccess = DateTime.Now;
-            NotifyPropertyChanged("LastAccess");
+            NotifyPropertyChanged(nameof(LastAccess));
             if (userAction)
             {
                 LastUserAction = DateTime.Now;
-                NotifyPropertyChanged("LastUserAction");
+                NotifyPropertyChanged(nameof(LastUserAction));
             }
             StonehengeCookieSet = cookies.ContainsKey("stonehenge-id");
-            NotifyPropertyChanged("StonehengeCookieSet");
+            NotifyPropertyChanged(nameof(StonehengeCookieSet));
         }
 
         public void SetContext(string context)

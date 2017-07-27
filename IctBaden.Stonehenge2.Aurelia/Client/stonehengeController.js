@@ -1,13 +1,16 @@
 ﻿
 // ReSharper disable Es6Feature
-import {HttpClient} from 'aurelia-http-client';
-import {Tools} from 'app';
+import { inject } from 'aurelia-framework';
+import { HttpClient } from 'aurelia-http-client';
+import { App, Tools } from 'app';
 
+@inject(App)
 export class stonehengeViewModelName {
 
-    constructor(http) {
+    constructor(App) {
 
         this.http = new HttpClient();
+        this.StonehengeRouter = App.router;
     
         this.StonehengeActive = false;
         this.StonehengeInitialLoading = true;
@@ -33,9 +36,10 @@ export class stonehengeViewModelName {
                     let data = JSON.parse(response.response);
                     scope.StonehengePollEventsActive = null;
                     scope.StonehengeIsDisconnected = false;
-                    for(var propertyName in data) {
-                        this[propertyName] = data[propertyName];
-                    }
+                    scope.StonehengeSetViewModelData(scope, data);
+                    //for(var propertyName in data) {
+                    //    this[propertyName] = data[propertyName];
+                    //}
                     if (continuePolling || scope.StonehengeContinuePolling) {
                         setTimeout(function() { scope.StonehengePollEvents(scope, false); }, scope.StonehengePollDelay);
                     }
@@ -72,9 +76,10 @@ export class stonehengeViewModelName {
                     scope.StonehengeInitialLoading = false;
                     scope.StonehengeIsLoading = false;
                     if (scope.StonehengePostActive) {
-                        for(var propertyName in data) {
-                            scope[propertyName] = data[propertyName];
-                        }
+                        scope.StonehengeSetViewModelData(scope, data);
+                        //for(var propertyName in data) {
+                        //    scope[propertyName] = data[propertyName];
+                        //}
                         scope.StonehengePostActive = false;
                     }
                     if (scope.StonehengePollEventsActive == null) {
@@ -106,9 +111,10 @@ export class stonehengeViewModelName {
                     let data = JSON.parse(response.response);
                     scope.StonehengeInitialLoading = false;
                     scope.StonehengeIsLoading = false;
-                    for (var propertyName in data) {
-                        scope[propertyName] = data[propertyName];
-                    }
+                    scope.StonehengeSetViewModelData(scope, data);
+                    //for (var propertyName in data) {
+                    //    scope[propertyName] = data[propertyName];
+                    //}
                     if (scope.StonehengePollEventsActive == null) {
                         setTimeout(function() { scope.StonehengePollEvents(scope, true); }, scope.StonehengePollDelay);
                     }
@@ -120,6 +126,28 @@ export class stonehengeViewModelName {
                     setTimeout(function() { window.location.reload(); }, 1000);
                     window.location.reload();
                 });
+        };
+
+        this.StonehengeSetViewModelData = function(viewmodel, data) {
+            for (var propertyName in data) {
+
+                if (propertyName === "StonehengeNavigate") {
+                    viewmodel.StonehengeRouter.navigateToRoute(data[propertyName]);
+                } else if (propertyName === "StonehengeEval") {
+                    try {
+                        var script = data[propertyName];
+                        eval(script);
+                    } catch (error) {
+                        // ignore
+                        if (console && console.log) {
+                            console.log("script: " + script);
+                            console.log("error: " + error);
+                        }
+                    } 
+                } else {
+                    viewmodel[propertyName] = data[propertyName];
+                }
+            }
         };
 
         /*commands*/

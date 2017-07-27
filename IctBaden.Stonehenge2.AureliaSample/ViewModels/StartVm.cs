@@ -43,7 +43,19 @@ namespace IctBaden.Stonehenge2.Aurelia.Sample.ViewModels
         {
             Test = number + Test + text;
         }
-        
+
+        [ActionMethod]
+        public void ShowMessageBox()
+        {
+            MessageBox("Stonehenge 2", $"Server side message box request. {Test}");
+        }
+
+        [ActionMethod]
+        public void NavigateToTree()
+        {
+            NavigateTo("tree");
+        }
+
         public override Resource GetDataResource(string resourceName)
         {
             if (resourceName.EndsWith(".ics"))

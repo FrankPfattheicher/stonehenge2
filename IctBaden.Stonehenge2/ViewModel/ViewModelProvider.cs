@@ -1,4 +1,6 @@
-﻿namespace IctBaden.Stonehenge2.ViewModel
+﻿using System.Web;
+
+namespace IctBaden.Stonehenge2.ViewModel
 {
     using System;
     using System.Collections.Generic;
@@ -110,19 +112,45 @@
             var events = session.CollectEvents();
             if (events.Count > 0)
             {
-                var vm = session.ViewModel as ActiveViewModel;
-                if (vm != null)
+                var activeVm = session.ViewModel as ActiveViewModel;
+                if (activeVm != null)
                 {
                     foreach (var property in events)
                     {
-                        var value = vm.TryGetMember(property);
-                        data.Add($"\"{property}\":{JsonSerializer.SerializeObjectString(null, value)}");
+                            var value = activeVm.TryGetMember(property);
+                            data.Add($"\"{property}\":{JsonSerializer.SerializeObjectString(null, value)}");
                     }
+                    AddStonehengeInternalProperties(data, activeVm);
                 }
             }
 
             var json = "{" + string.Join(",", data) + "}";
             return new Resource(resourceName, "ViewModelProvider", ResourceType.Json, json, Resource.Cache.None);
+        }
+
+        private static void AddStonehengeInternalProperties(List<string> data, ActiveViewModel activeVm)
+        {
+            if (!string.IsNullOrEmpty(activeVm.MessageBoxTitle) || !string.IsNullOrEmpty(activeVm.MessageBoxText))
+            {
+                var title = activeVm.MessageBoxTitle;
+                var text = activeVm.MessageBoxText;
+                var script = $"alert('{HttpUtility.JavaScriptStringEncode(title)}\\r\\n{HttpUtility.JavaScriptStringEncode(text)}');";
+                data.Add($"\"StonehengeEval\":{JsonSerializer.SerializeObjectString(null, script)}");
+                activeVm.MessageBoxTitle = null;
+                activeVm.MessageBoxText = null;
+            }
+            if (!string.IsNullOrEmpty(activeVm.NavigateToRoute))
+            {
+                var route = activeVm.NavigateToRoute;
+                data.Add($"\"StonehengeNavigate\":{JsonSerializer.SerializeObjectString(null, route)}");
+                activeVm.NavigateToRoute = null;
+            }
+            else if (!string.IsNullOrEmpty(activeVm.ClientScript))
+            {
+                var script = activeVm.ClientScript;
+                data.Add($"\"StonehengeEval\":{JsonSerializer.SerializeObjectString(null, script)}");
+                activeVm.ClientScript = null;
+            }
         }
 
         private static Resource GetDataResource(AppSession session, string resourceName, Dictionary<string, string> parameters)
@@ -233,10 +261,7 @@
                     data.AddRange(JsonSerializer.SerializeObject(model.Prefix, model.Model));
                 }
 
-                if (!string.IsNullOrEmpty(activeVm.NavigateToRoute))
-                {
-                    data.Add("\"stonehenge_navigate\":" + JsonConvert.SerializeObject(activeVm.NavigateToRoute));
-                }
+                AddStonehengeInternalProperties(data, activeVm);
 
                 // ReSharper disable once LoopCanBeConvertedToQuery
                 foreach (var name in activeVm.GetDictionaryNames())
