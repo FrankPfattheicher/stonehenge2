@@ -1,6 +1,8 @@
 # stonehenge
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
 
+See a (very) short [getting started introdution here](docs/GettingStarted.md).
+
 ## Version V2.0
 What's new?
 This version has an architecture and is no longer a proof of concept hack.
