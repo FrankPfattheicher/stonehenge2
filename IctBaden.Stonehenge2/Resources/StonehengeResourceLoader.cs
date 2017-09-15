@@ -10,11 +10,11 @@ namespace IctBaden.Stonehenge2.Resources
     using Core;
     using ViewModel;
 
-    public class Loader : IStonehengeResourceProvider
+    public class StonehengeResourceLoader : IStonehengeResourceProvider
     {
         public List<IStonehengeResourceProvider> Loaders { get; }
 
-        public Loader(List<IStonehengeResourceProvider> loaders = null)
+        public StonehengeResourceLoader(List<IStonehengeResourceProvider> loaders = null)
         {
             Loaders = loaders ?? new List<IStonehengeResourceProvider>();
         }
@@ -80,7 +80,7 @@ namespace IctBaden.Stonehenge2.Resources
             return replaced;
         }
 
-        public static Loader CreateDefaultLoader()
+        public static StonehengeResourceLoader CreateDefaultLoader()
         {
             var assemblies = new List<Assembly>
                                  {
@@ -96,7 +96,7 @@ namespace IctBaden.Stonehenge2.Resources
 
             var viewModelCreator = new ViewModelProvider();
 
-            var loader = new Loader(new List<IStonehengeResourceProvider> { fileLoader, resLoader, viewModelCreator });
+            var loader = new StonehengeResourceLoader(new List<IStonehengeResourceProvider> { fileLoader, resLoader, viewModelCreator });
 
             return loader;
         }

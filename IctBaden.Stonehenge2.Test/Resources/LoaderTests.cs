@@ -11,7 +11,7 @@
     [TestFixture]
     public class LoaderTests
     {
-        private Loader loader;
+        private StonehengeResourceLoader loader;
         private readonly AppSession session = new AppSession();
 
         private FileLoaderTests fileTest;
@@ -30,7 +30,7 @@
 
             fileLoader = new FileLoader(Path.GetTempPath());
 
-            loader = new Loader(new List<IStonehengeResourceProvider>{ fileLoader, resLoader });
+            loader = new StonehengeResourceLoader(new List<IStonehengeResourceProvider>{ fileLoader, resLoader });
 
             fileTest = new FileLoaderTests();
             fileTest.Init();

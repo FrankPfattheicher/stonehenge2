@@ -1,4 +1,5 @@
 
+* 2.2.2 - Simplify setup: Renamed Loader to StonehengeResourceLoader and add reference to provider init methods.
 * 2.2.1 - Signature of Aurelia- and AngulaResourceProviders Init method changed. Renamed to InitProvider. File content support made optional.
 * 2.2.0 - Server side MessageBox and Navigation requests added.
 * 2.1.3 - Cookie retrieve bug fixed. Sample defaultheaders.txt

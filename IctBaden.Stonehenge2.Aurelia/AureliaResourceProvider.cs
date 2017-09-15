@@ -16,11 +16,15 @@ namespace IctBaden.Stonehenge2.Aurelia
     {
         private Dictionary<string, Resource> _aureliaContent;
 
-        public void InitProvider(string appTitle, string rootPage) => InitProvider(appTitle, rootPage, null);
+        public void InitProvider(StonehengeResourceLoader loader, string appTitle, string rootPage) => InitProvider(loader, appTitle, rootPage, null);
 
-        public void InitProvider(string appTitle, string rootPage, string appFilesPath)
+        public void InitProvider(StonehengeResourceLoader loader, string appTitle, string rootPage, string appFilesPath)
         {
             _aureliaContent = new Dictionary<string, Resource>();
+
+            var resLoader = (ResourceLoader)loader.Loaders.First(ld => ld.GetType() == typeof(ResourceLoader));
+            resLoader.AddAssembly(typeof(AureliaResourceProvider).Assembly);
+            loader.Loaders.Add(this);
 
             var appCreator = new AureliaAppCreator(appTitle, rootPage, _aureliaContent);
 

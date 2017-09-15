@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using IctBaden.Stonehenge2.Caching;
 using IctBaden.Stonehenge2.Hosting;
@@ -30,19 +27,11 @@ namespace IctBaden.Stonehenge2.Aurelia.Sample
             Console.WriteLine(@"Stonehenge 2 sample");
             Console.WriteLine(@"");
 
-            // support file system based content
-            var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
-            var appFilesPath = Path.Combine(appPath, "app");
-
-            var loader = Loader.CreateDefaultLoader();
-            var resLoader = (ResourceLoader)loader.Loaders.First(ld => ld.GetType() == typeof(ResourceLoader));
-
             // Select client framework
             Console.WriteLine(@"Using client framework aurelia");
+            var loader = StonehengeResourceLoader.CreateDefaultLoader();
             var aurelia = new AureliaResourceProvider();
-            aurelia.InitProvider("Sample", "start", appFilesPath);
-            resLoader.AddAssembly(typeof(AureliaResourceProvider).Assembly);
-            loader.Loaders.Add(aurelia);
+            aurelia.InitProvider(loader, "Sample", "start");
 
             // Select hosting technology
             var hosting = "owin";

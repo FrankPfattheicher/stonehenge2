@@ -1,7 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Threading;
 using IctBaden.Stonehenge2.Caching;
 using IctBaden.Stonehenge2.Hosting;
@@ -27,26 +24,15 @@ namespace IctBaden.Stonehenge2.Angular1.Sample
             Console.WriteLine(@"Stonehenge 2 sample");
             Console.WriteLine(@"");
 
-
-            var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
-            var appFilesPath = Path.Combine(appPath, "app");
-
-            var loader = Loader.CreateDefaultLoader();
-            var resLoader = (ResourceLoader)loader.Loaders.First(ld => ld.GetType() == typeof(ResourceLoader));
-
-            var cache = new MemoryCache();
-
-            var hosting = "owin";
-            if (Environment.CommandLine.Contains("/Simple")) { hosting = "simple"; }
-
             // Select client framework
+            var loader = StonehengeResourceLoader.CreateDefaultLoader();
             Console.WriteLine(@"Using client framework AngularJS");
             var angular = new AngularResourceProvider();
-            angular.InitProvider("Sample", "start", appFilesPath);
-            resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);
-            loader.Loaders.Add(angular);
+            angular.InitProvider(loader, "Sample", "start");
 
             // Select hosting technology
+            var hosting = "owin";
+            if (Environment.CommandLine.Contains("/Simple")) { hosting = "simple"; }
             switch (hosting)
             {
                 case "owin":
@@ -55,7 +41,7 @@ namespace IctBaden.Stonehenge2.Angular1.Sample
                     break;
                 case "simple":
                     Console.WriteLine(@"Using simple http hosting");
-                    _server = new SimpleHttpHost(loader, cache);
+                    _server = new SimpleHttpHost(loader, new MemoryCache());
                     break;
             }
 
