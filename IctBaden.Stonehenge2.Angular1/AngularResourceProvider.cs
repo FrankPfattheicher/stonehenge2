@@ -13,11 +13,12 @@ namespace IctBaden.Stonehenge2.Angular1
 {
   public class AngularResourceProvider : IStonehengeResourceProvider
     {
-        private Dictionary<string, Resource> angularContent;
+        private Dictionary<string, Resource> _angularContent;
 
-        public void Init(string appFilesPath, string rootPage)
+        public void InitProvider(string appTitle, string rootPage) => InitProvider(appTitle, rootPage, null);
+        public void InitProvider(string appTitle, string rootPage, string appFilesPath)
         {
-            angularContent = new Dictionary<string, Resource>();
+            _angularContent = new Dictionary<string, Resource>();
 
             AddFileSystemContent(appFilesPath);
             AddResourceContent();
@@ -26,7 +27,7 @@ namespace IctBaden.Stonehenge2.Angular1
 
         public void Dispose()
         {
-            angularContent.Clear();
+            _angularContent.Clear();
         }
 
         private static ViewModelInfo GetViewModelInfo(string route, string pageText)
@@ -57,7 +58,7 @@ namespace IctBaden.Stonehenge2.Angular1
                     var pageText = File.ReadAllText(appFile);
 
                     var resource = new Resource(route, appFile, ResourceType.Html, pageText, Resource.Cache.Revalidate) { ViewModel = GetViewModelInfo(route, pageText) };
-                    angularContent.Add(resourceId, resource);
+                    _angularContent.Add(resourceId, resource);
                 }
             }
         }
@@ -71,7 +72,7 @@ namespace IctBaden.Stonehenge2.Angular1
               .Where(name => (name.EndsWith(".html")) && (!name.Contains("index.html"))).OrderBy(name => name))
             {
                 var resourceId = resourceName.Substring(baseName.Length);
-                if (angularContent.ContainsKey(resourceId))
+                if (_angularContent.ContainsKey(resourceId))
                 {
                     Trace.TraceWarning("AngularResourceProvider.AddResourceContent: Resource with id {0} already exits", resourceId);
                     continue;
@@ -91,16 +92,16 @@ namespace IctBaden.Stonehenge2.Angular1
                 }
 
                 var resource = new Resource(route, "res://" + resourceName, ResourceType.Html, pageText, Resource.Cache.Revalidate) { ViewModel = GetViewModelInfo(route, pageText) };
-                angularContent.Add(resourceId, resource);
+                _angularContent.Add(resourceId, resource);
             }
         }
 
         private void AddAppJs(string rootPage)
         {
-            var appCreator = new AngularAppCreator(rootPage, angularContent);
+            var appCreator = new AngularAppCreator(rootPage, _angularContent);
             var resource = new Resource("stonehengeApp.js", "AngularResourceProvider", ResourceType.Html,
                 appCreator.CreateApplicationJs(), Resource.Cache.Revalidate);
-            angularContent.Add("stonehengeApp.js", resource);
+            _angularContent.Add("stonehengeApp.js", resource);
         }
 
 
@@ -110,9 +111,9 @@ namespace IctBaden.Stonehenge2.Angular1
         }
         public Resource Get(AppSession session, string resourceName, Dictionary<string, string> parameters)
         {
-            if (angularContent.ContainsKey(resourceName))
+            if (_angularContent.ContainsKey(resourceName))
             {
-                return angularContent[resourceName];
+                return _angularContent[resourceName];
             }
             return null;
         }

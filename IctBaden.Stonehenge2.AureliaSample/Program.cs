@@ -30,26 +30,23 @@ namespace IctBaden.Stonehenge2.Aurelia.Sample
             Console.WriteLine(@"Stonehenge 2 sample");
             Console.WriteLine(@"");
 
-
+            // support file system based content
             var appPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) ?? ".";
             var appFilesPath = Path.Combine(appPath, "app");
 
             var loader = Loader.CreateDefaultLoader();
             var resLoader = (ResourceLoader)loader.Loaders.First(ld => ld.GetType() == typeof(ResourceLoader));
 
-            var cache = new MemoryCache();
-
-            var hosting = "owin";
-            if (Environment.CommandLine.Contains("/Simple")) { hosting = "simple"; }
-
             // Select client framework
             Console.WriteLine(@"Using client framework aurelia");
             var aurelia = new AureliaResourceProvider();
-            aurelia.Init(appFilesPath, "Sample", "start");
+            aurelia.InitProvider("Sample", "start", appFilesPath);
             resLoader.AddAssembly(typeof(AureliaResourceProvider).Assembly);
             loader.Loaders.Add(aurelia);
 
             // Select hosting technology
+            var hosting = "owin";
+            if (Environment.CommandLine.Contains("/Simple")) { hosting = "simple"; }
             switch (hosting)
             {
                 case "owin":
@@ -58,7 +55,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Sample
                     break;
                 case "simple":
                     Console.WriteLine(@"Using simple http hosting");
-                    _server = new SimpleHttpHost(loader, cache);
+                    _server = new SimpleHttpHost(loader, new MemoryCache());
                     break;
             }
 

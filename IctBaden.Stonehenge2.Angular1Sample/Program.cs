@@ -42,7 +42,7 @@ namespace IctBaden.Stonehenge2.Angular1.Sample
             // Select client framework
             Console.WriteLine(@"Using client framework AngularJS");
             var angular = new AngularResourceProvider();
-            angular.Init(appFilesPath, "start");
+            angular.InitProvider("Sample", "start", appFilesPath);
             resLoader.AddAssembly(typeof(AngularResourceProvider).Assembly);
             loader.Loaders.Add(angular);
 

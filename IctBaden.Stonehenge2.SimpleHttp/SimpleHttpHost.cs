@@ -12,7 +12,7 @@ namespace IctBaden.Stonehenge2.SimpleHttp
     using Core;
     using Hosting;
 
-    using IctBaden.Stonehenge2.Caching;
+    using Caching;
 
     using Resources;
 
@@ -21,18 +21,18 @@ namespace IctBaden.Stonehenge2.SimpleHttp
 
     public class SimpleHttpHost : IStonehengeHost
     {
-        private SimpleHttpServer server;
+        private SimpleHttpServer _server;
 
         public string AppTitle { get; private set; }
         public string BaseUrl { get; private set; }
 
-        private readonly IStonehengeResourceProvider resourceLoader;
-        private readonly IStonehengeSessionCache sessionCache;
+        private readonly IStonehengeResourceProvider _resourceLoader;
+        private readonly IStonehengeSessionCache _sessionCache;
 
         public SimpleHttpHost(IStonehengeResourceProvider loader, IStonehengeSessionCache cache)
         {
-            resourceLoader = loader;
-            sessionCache = cache;
+            _resourceLoader = loader;
+            _sessionCache = cache;
         }
 
         public bool Start(string title, bool useSsl = false, string hostAddress = null, int hostPort = 0)
@@ -47,17 +47,17 @@ namespace IctBaden.Stonehenge2.SimpleHttp
                 + (hostAddress ?? "127.0.0.1")
                 + ":" + hostPort;
 
-            server = new SimpleHttpServer(hostPort);
-            server.HandleGet += ServerOnHandleGet;
-            server.HandlePost += ServerOnHandlePost;
+            _server = new SimpleHttpServer(hostPort);
+            _server.HandleGet += ServerOnHandleGet;
+            _server.HandlePost += ServerOnHandlePost;
 
-            server.Start();
+            _server.Start();
             return true;
         }
 
         public void Terminate()
         {
-            server?.Terminate();
+            _server?.Terminate();
         }
 
         private void ServerOnHandleGet(SimpleHttpProcessor httpProcessor)
@@ -71,15 +71,15 @@ namespace IctBaden.Stonehenge2.SimpleHttp
                 var extract = new Regex("StonehengeSession=([0-9a-fA-F]+)");
                 var match = extract.Match(cookie.Value);
                 sessionId = match.Groups[1].Value;
-                if (sessionCache.ContainsKey(sessionId))
-                    session = sessionCache[sessionId] as AppSession;
+                if (_sessionCache.ContainsKey(sessionId))
+                    session = _sessionCache[sessionId] as AppSession;
             }
 
             if (session == null)
             {
                 session = new AppSession();
                 sessionId = session.Id;
-                sessionCache.Add(sessionId, session);
+                _sessionCache.Add(sessionId, session);
             }
 
             var header = new Dictionary<string, string> { { "Cookie", "StonehengeSession=" + sessionId } };
@@ -92,7 +92,7 @@ namespace IctBaden.Stonehenge2.SimpleHttp
 
             var resourceName = httpProcessor.Url.Substring(1);
             var parameters = new Dictionary<string, string>();  //TODO: extract parameters from URL
-            var content = resourceLoader.Get(session, resourceName, parameters);
+            var content = _resourceLoader.Get(session, resourceName, parameters);
             if (content == null)
             {
                 httpProcessor.WriteNotFound();
@@ -126,7 +126,7 @@ namespace IctBaden.Stonehenge2.SimpleHttp
             var queryString = HttpUtility.ParseQueryString(queryPart);
             var paramObjects = queryString.AllKeys
                 .ToDictionary(key => key, key => queryString[key]);
-            var content = resourceLoader.Post(new AppSession(), resourceName, paramObjects, formData);
+            var content = _resourceLoader.Post(new AppSession(), resourceName, paramObjects, formData);
             if (content == null)
             {
                 httpProcessor.WriteNotFound();
