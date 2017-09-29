@@ -125,9 +125,16 @@ export class stonehengeViewModelName {
                 if (propertyName === "StonehengeNavigate") {
                     var target = data[propertyName];
                     if (target.startsWith('#')) {
-                        $('.page-host').animate({
-                            scrollTop: $(target).offset().top
-                        }, 500);
+                        try {
+                            var pos = document.getElementById(target.substring(1)).offsetTop;
+                            //document.getElementById("stonehenge-page").animate({ scrollTop: pos }, 500);
+                            document.getElementById("stonehenge-page").scrollTop = pos;
+                        } catch (error) {
+                            // ignore
+                            if (console && console.log) {
+                                console.log("error: " + error);
+                            }
+                        } 
                     } else {
                         viewmodel.StonehengeRouter.navigateToRoute(target);
                     }

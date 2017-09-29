@@ -1,4 +1,5 @@
 
+* 2.2.4 - Page navigation without jQuery and without animation.
 * 2.2.3 - Added on page navigation with scroll animation.
 * 2.2.2 - Simplify setup: Renamed Loader to StonehengeResourceLoader and add reference to provider init methods.
 * 2.2.1 - Signature of Aurelia- and AngulaResourceProviders Init method changed. Renamed to InitProvider. File content support made optional.
