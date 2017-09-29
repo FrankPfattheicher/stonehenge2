@@ -37,9 +37,6 @@ export class stonehengeViewModelName {
                     scope.StonehengePollEventsActive = null;
                     scope.StonehengeIsDisconnected = false;
                     scope.StonehengeSetViewModelData(scope, data);
-                    //for(var propertyName in data) {
-                    //    this[propertyName] = data[propertyName];
-                    //}
                     if (continuePolling || scope.StonehengeContinuePolling) {
                         setTimeout(function() { scope.StonehengePollEvents(scope, false); }, scope.StonehengePollDelay);
                     }
@@ -77,9 +74,6 @@ export class stonehengeViewModelName {
                     scope.StonehengeIsLoading = false;
                     if (scope.StonehengePostActive) {
                         scope.StonehengeSetViewModelData(scope, data);
-                        //for(var propertyName in data) {
-                        //    scope[propertyName] = data[propertyName];
-                        //}
                         scope.StonehengePostActive = false;
                     }
                     if (scope.StonehengePollEventsActive == null) {
@@ -112,9 +106,6 @@ export class stonehengeViewModelName {
                     scope.StonehengeInitialLoading = false;
                     scope.StonehengeIsLoading = false;
                     scope.StonehengeSetViewModelData(scope, data);
-                    //for (var propertyName in data) {
-                    //    scope[propertyName] = data[propertyName];
-                    //}
                     if (scope.StonehengePollEventsActive == null) {
                         setTimeout(function() { scope.StonehengePollEvents(scope, true); }, scope.StonehengePollDelay);
                     }
@@ -132,7 +123,14 @@ export class stonehengeViewModelName {
             for (var propertyName in data) {
 
                 if (propertyName === "StonehengeNavigate") {
-                    viewmodel.StonehengeRouter.navigateToRoute(data[propertyName]);
+                    var target = data[propertyName];
+                    if (target.startsWith('#')) {
+                        $('.page-host').animate({
+                            scrollTop: $(target).offset().top
+                        }, 500);
+                    } else {
+                        viewmodel.StonehengeRouter.navigateToRoute(target);
+                    }
                 } else if (propertyName === "StonehengeEval") {
                     try {
                         var script = data[propertyName];

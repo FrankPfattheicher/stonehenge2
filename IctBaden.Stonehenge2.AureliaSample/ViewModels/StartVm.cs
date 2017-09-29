@@ -56,6 +56,12 @@ namespace IctBaden.Stonehenge2.Aurelia.Sample.ViewModels
             NavigateTo("tree");
         }
 
+        [ActionMethod]
+        public void NavigateOnPage()
+        {
+            NavigateTo("#pagetop");
+        }
+
         public override Resource GetDataResource(string resourceName)
         {
             if (resourceName.EndsWith(".ics"))
