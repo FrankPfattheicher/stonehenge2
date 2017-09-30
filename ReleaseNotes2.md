@@ -1,4 +1,5 @@
 
+* 2.2.6 - Page navigation using scrollIntoView due to problems on mobile browsers.
 * 2.2.5 - Page navigation fixed animation using class stonehenge-page.
 * 2.2.4 - Page navigation without jQuery and without animation.
 * 2.2.3 - Added on page navigation with scroll animation.
