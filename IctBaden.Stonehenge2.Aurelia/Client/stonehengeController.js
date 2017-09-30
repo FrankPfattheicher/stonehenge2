@@ -126,9 +126,12 @@ export class stonehengeViewModelName {
                     var target = data[propertyName];
                     if (target.startsWith('#')) {
                         try {
-                            var pos = document.getElementById(target.substring(1)).offsetTop;
+                            $('.stonehenge-page').animate({
+                                scrollTop: $(target).offset().top
+                            }, 500);
+                            //var pos = document.getElementById(target.substring(1)).offsetTop;
                             //document.getElementById("stonehenge-page").animate({ scrollTop: pos }, 500);
-                            document.getElementById("stonehenge-page").scrollTop = pos;
+                            //document.getElementById("stonehenge-page").scrollTop = pos;
                         } catch (error) {
                             // ignore
                             if (console && console.log) {
