@@ -23,9 +23,9 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 
         public AureliaAppCreator(string appTitle, string rootPage, Dictionary<string, Resource> aureliaContent)
         {
-            this._appTitle = appTitle;
-            this._rootPage = rootPage;
-            this._aureliaContent = aureliaContent;
+            _appTitle = appTitle;
+            _rootPage = rootPage;
+            _aureliaContent = aureliaContent;
         }
 
         private static string LoadResourceText(string resourceName)
@@ -163,11 +163,22 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 
         private static List<string> GetPostbackPropNames(Type vmType)
         {
+            var postbackPropNames = new List<string>();
+
             // properties
             var vmProps = new List<PropertyDescriptor>();
             var sessionCtor = vmType.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Length == 1);
             var session = new AppSession();
-            var viewModel = (sessionCtor != null) ? Activator.CreateInstance(vmType, session) : Activator.CreateInstance(vmType);
+            object viewModel;
+            try
+            {
+                viewModel = (sessionCtor != null) ? Activator.CreateInstance(vmType, session) : Activator.CreateInstance(vmType);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError($"Failed to create ViewModel '{vmType.Name}' : " + ex.Message);
+                return postbackPropNames;
+            }
             var activeVm = viewModel as ActiveViewModel;
             if (activeVm != null)
             {
@@ -186,7 +197,6 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                                    select prop.Name).ToList();
 
             // do not send ReadOnly or OneWay bound properties back
-            var postbackPropNames = new List<string>();
             foreach (var propName in assignPropNames)
             {
                 var prop = vmType.GetProperty(propName);
