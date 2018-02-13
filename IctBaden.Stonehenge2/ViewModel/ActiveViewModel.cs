@@ -88,19 +88,17 @@ namespace IctBaden.Stonehenge2.ViewModel
 
             public override object GetValue(object component)
             {
-                var dynComponent = component as DynamicObject;
-                if (dynComponent == null) return _originalDescriptor?.GetValue(component);
+                if (!(component is DynamicObject dynComponent))
+                    return _originalDescriptor?.GetValue(component);
 
-                object result;
-                return dynComponent.TryGetMember(new GetMemberBinderEx(_propertyName), out result)
+                return dynComponent.TryGetMember(new GetMemberBinderEx(_propertyName), out var result)
                   ? result
                   : _originalDescriptor?.GetValue(component);
             }
 
             public override void SetValue(object component, object value)
             {
-                var dynComponent = component as DynamicObject;
-                if (dynComponent != null)
+                if (component is DynamicObject dynComponent)
                 {
                     if (dynComponent.TrySetMember(new SetMemberBinderEx(_propertyName), value))
                         return;
@@ -207,8 +205,7 @@ namespace IctBaden.Stonehenge2.ViewModel
 
         public object TryGetMember(string name)
         {
-            object result;
-            TryGetMember(new GetMemberBinderEx(name), out result);
+            TryGetMember(new GetMemberBinderEx(name), out var result);
             return result;
         }
 
