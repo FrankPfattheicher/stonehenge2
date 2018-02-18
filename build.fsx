@@ -109,7 +109,7 @@ Target "Run46Tests" (fun _ ->
 
 Target "AssemblyVersion" (fun _ ->
     CreateCSharpAssemblyInfo @".\Stonehenge2-AssemblyInfo.cs"
-        [Attribute.Copyright "Copyright ©2013-2017 ICT Baden GmbH"
+        [Attribute.Copyright "Copyright ©2013-2018 ICT Baden GmbH"
          Attribute.Company "ICT Baden GmbH"
          Attribute.Product "Web Application Framework"
          Attribute.Version release.AssemblyVersion

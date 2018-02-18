@@ -92,8 +92,16 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                 var controllerJs = GetController(viewModel.ViewModel.VmName);
                 if (!string.IsNullOrEmpty(controllerJs))
                 {
-                    var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs, Resource.Cache.Revalidate);
-                    _aureliaContent.Add(resource.Name, resource);
+                    if (string.IsNullOrEmpty(viewModel.ViewModel.VmName))
+                    {
+                        Trace.TraceError($"AureliaAppCreater.CreateControllers: <UNKNOWN VM> => src.{viewModel.Name}.js");
+                    }
+                    else
+                    {
+                        Trace.TraceInformation($"AureliaAppCreater.CreateControllers: {viewModel.ViewModel.VmName} => src.{viewModel.Name}.js");
+                        var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs, Resource.Cache.Revalidate);
+                        _aureliaContent.Add(resource.Name, resource);
+                    }
                 }
             }
         }
@@ -122,7 +130,8 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
             var vmType = GetVmType(vmName);
             if (vmType == null)
             {
-                Debug.Assert(false, "No VM for type " + vmName + " defined.");
+                Trace.TraceError($"No VM for type {vmName} defined.");
+                Debug.Assert(false, $"No VM for type {vmName} defined.");
                 // ReSharper disable once HeuristicUnreachableCode
                 return null;
             }

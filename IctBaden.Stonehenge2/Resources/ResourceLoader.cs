@@ -98,7 +98,7 @@ namespace IctBaden.Stonehenge2.Resources
                 var asmResource = new AssemblyResource(resource, shortName, assemby);
                 if (!dict.ContainsKey(resourceId))
                 {
-                    //Debug.WriteLine($"ResourceLoader: Added {shortName}");
+                    Trace.TraceInformation($"ResourceLoader.AddAssemblyResources: Added {shortName}");
                     dict.Add(resourceId, asmResource);
                 }
             }
