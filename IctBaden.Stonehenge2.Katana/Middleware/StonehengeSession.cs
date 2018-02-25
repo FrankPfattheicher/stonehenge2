@@ -43,7 +43,14 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                     stonehengeId = match.Groups[1].Value;
                 }
             }
-            Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] Begin {context.Request.Method} {path}");
+            try
+            {
+                Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] Begin {context.Request.Method} {path}");
+            }
+            catch
+            {
+                // ignore
+            }
 
             var appSessions = context.Environment["stonehenge.AppSessions"] as List<AppSession>;
             CleanupTimedOutSessions(appSessions);
