@@ -109,7 +109,7 @@ namespace IctBaden.Stonehenge2.Core
 
 
             var asm = Assembly.GetEntryAssembly();
-            var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName.EndsWith(typeName));
+            var vmtype = asm.GetTypes().FirstOrDefault(type => type.FullName?.EndsWith(typeName) ?? false);
             if (vmtype == null)
             {
                 ViewModel = null;
