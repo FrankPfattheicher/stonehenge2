@@ -25,6 +25,8 @@ namespace IctBaden.Stonehenge2.Katana
 
         public string BaseUrl { get; private set; }
 
+        public bool DisableSessionIdUrlParameter { get; set; }
+
         public bool Start(string title, bool useSsl, string hostAddress, int hostPort)
         {
             AppTitle = title;
@@ -36,13 +38,12 @@ namespace IctBaden.Stonehenge2.Katana
                     + ":" 
                     + (hostPort != 0 ? hostPort : (useSsl ? 443 : 80));
 
-                var startup = new Startup(title, _resourceLoader);
+                var startup = new Startup(title, _resourceLoader, DisableSessionIdUrlParameter);
                 _webApp = WebApp.Start(BaseUrl, startup.Configuration);
             }
             catch (Exception ex)
             {
-                var inner = ex.InnerException as HttpListenerException;
-                if ((inner != null) && (inner.ErrorCode == 5))
+                if ((ex.InnerException is HttpListenerException inner) && (inner.ErrorCode == 5))
                 {
                     Trace.TraceError($"Access denied: Try netsh http delete urlacl {BaseUrl}");
                 }

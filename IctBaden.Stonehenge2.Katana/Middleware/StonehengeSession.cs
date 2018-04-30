@@ -61,7 +61,15 @@ namespace IctBaden.Stonehenge2.Katana.Middleware
                         ? new[] { "stonehenge-id=" + session.Id, "Secure" }
                         : new[] { "stonehenge-id=" + session.Id });
 
-                context.Response.Redirect("/Index.html?stonehenge-id=" + session.Id);
+                var disableUrlParam = (bool)context.Environment["stonehenge.DisableSessionIdUrlParameter"];
+                if (disableUrlParam)
+                {
+                    context.Response.Redirect("/Index.html");
+                }
+                else
+                {
+                    context.Response.Redirect("/Index.html?stonehenge-id=" + session.Id);
+                }
                 Trace.TraceInformation($"Stonehenge2.Katana[{stonehengeId}] From IP {context.Request.RemoteIpAddress}:{context.Request.RemotePort} - redirect to {session.Id}");
                 return;
             }

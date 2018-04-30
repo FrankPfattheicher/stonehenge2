@@ -40,7 +40,7 @@ namespace IctBaden.Stonehenge2.Aurelia.Sample
             {
                 case "owin":
                     Console.WriteLine(@"Using Katana OWIN hosting");
-                    _server = new KatanaHost(loader);
+                    _server = new KatanaHost(loader) { DisableSessionIdUrlParameter = true };
                     break;
                 case "simple":
                     Console.WriteLine(@"Using simple http hosting");

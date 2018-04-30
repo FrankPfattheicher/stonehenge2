@@ -25,6 +25,8 @@ namespace IctBaden.Stonehenge2.SimpleHttp
 
         public string AppTitle { get; private set; }
         public string BaseUrl { get; private set; }
+        public bool DisableSessionIdUrlParameter { get; set; }
+
 
         private readonly IStonehengeResourceProvider _resourceLoader;
         private readonly IStonehengeSessionCache _sessionCache;

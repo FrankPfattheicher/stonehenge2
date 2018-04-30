@@ -1,4 +1,5 @@
 
+* 2.2.9 - DisableSessionIdUrlParameter option added to IStonehengeHost.
 * 2.2.8 - Added traces to AureliaResourceProvider application creation.
 * 2.2.7 - Simplified application initialization.
 * 2.2.6 - Page navigation using scrollIntoView due to problems on mobile browsers.
