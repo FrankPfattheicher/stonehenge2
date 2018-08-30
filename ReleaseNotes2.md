@@ -1,4 +1,5 @@
 
+* 2.2.11 - Support for controller extension vmname_user.js added as in stonehenge 1.
 * 2.2.10 - Error handling in client improved. Referrer-Policy added.
 * 2.2.9 - DisableSessionIdUrlParameter option added to IStonehengeHost.
 * 2.2.8 - Added traces to AureliaResourceProvider application creation.

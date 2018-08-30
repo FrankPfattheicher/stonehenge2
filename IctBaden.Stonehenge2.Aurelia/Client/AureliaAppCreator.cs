@@ -30,7 +30,11 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
 
         private static string LoadResourceText(string resourceName)
         {
-            var assembly = Assembly.GetAssembly(typeof(AureliaAppCreator));
+            return LoadResourceText(Assembly.GetAssembly(typeof(AureliaAppCreator)), resourceName);
+        }
+
+        private static string LoadResourceText(Assembly assembly, string resourceName)
+        {
             var resourceText = string.Empty;
 
             using (var stream = assembly.GetManifestResourceStream(resourceName))
@@ -99,6 +103,14 @@ namespace IctBaden.Stonehenge2.Aurelia.Client
                     else
                     {
                         Trace.TraceInformation($"AureliaAppCreater.CreateControllers: {viewModel.ViewModel.VmName} => src.{viewModel.Name}.js");
+
+                        var assembly = Assembly.GetEntryAssembly();
+                        var userjs = LoadResourceText(assembly, $"{assembly.GetName().Name}.app.{viewModel.Name}_user.js");
+                        if (!string.IsNullOrWhiteSpace(userjs))
+                        {
+                            controllerJs += userjs;
+                        }
+
                         var resource = new Resource($"src.{viewModel.Name}.js", "AureliaResourceProvider", ResourceType.Js, controllerJs, Resource.Cache.Revalidate);
                         _aureliaContent.Add(resource.Name, resource);
                     }
