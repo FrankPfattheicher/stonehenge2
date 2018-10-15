@@ -27,7 +27,7 @@ System.config({
         "aurelia-templating-binding": "npm:aurelia-templating-binding@1.0.0-beta.1.2.1",
         "aurelia-templating-resources": "npm:aurelia-templating-resources@1.0.0-beta.1.2.1",
         "aurelia-templating-router": "npm:aurelia-templating-router@1.0.0-beta.1.2.0",
-        "babel": "npm:babel-core@5.8.35",
+        "babel": "npm:babel-core@6.7.6",
         "bootstrap": "github:twbs/bootstrap@3.3.6",
         "es6-promise": "npm:es6-promise@3.1.2",
         "font-awesome": "npm:font-awesome@4.5.0",
@@ -191,8 +191,8 @@ System.config({
     depCache: {},
     bundles: {
         "aurelia-babel.js": [
-          "npm:babel-core@5.8.35.js",
-          "npm:babel-core@5.8.35/browser.js"
+          "npm:babel-core@6.7.6.js",
+          "npm:babel-core@6.7.6/browser.js"
         ],
         "app-build.js": [],
         "aurelia.js": [
