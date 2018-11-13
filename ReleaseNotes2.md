@@ -1,4 +1,5 @@
 
+* 2.2.12 - Switched back to .NET Framework 4.5.1 to be Mono compatible.
 * 2.2.11 - Support for controller extension vmname_user.js added as in stonehenge 1.
 * 2.2.10 - Error handling in client improved. Referrer-Policy added.
 * 2.2.9 - DisableSessionIdUrlParameter option added to IStonehengeHost.
