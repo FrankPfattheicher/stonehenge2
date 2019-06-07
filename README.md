@@ -1,5 +1,8 @@
-# stonehenge
+# stonehenge 2
 An open source .NET Framework to use Web UI technologies for desktop and/or web applications.
+
+This version is deprecated !
+Please use [stonehenge3](https://github.com/FrankPfattheicher/stonehenge3) instead.
 
 See a (very) short [getting started introdution here](docs/GettingStarted.md).
 
